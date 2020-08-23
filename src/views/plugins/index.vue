@@ -27,7 +27,7 @@
     >
       <el-table-column align="center" label="PluginID" width="95">
         <template slot-scope="scope">
-          {{ scope.row.pluginID }}
+          {{ scope.row.pluginId }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="插件名" width="110">
@@ -61,19 +61,43 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button v-if="row.status == '2'" size="mini" type="success">
+          <el-button
+            v-if="row.status == '2'"
+            size="mini"
+            type="success"
+            @click="installClick(row.pluginId)"
+          >
             安装
           </el-button>
-          <el-button v-if="row.status == '0'" size="mini" type="success">
+          <el-button
+            v-if="row.status == '0'"
+            size="mini"
+            type="success"
+            @click="disableClick(row.pluginId)"
+          >
             禁用
           </el-button>
-          <el-button v-if="row.status == '1'" size="mini">
+          <el-button
+            v-if="row.status == '1'"
+            size="mini"
+            @click="enableClick(row.pluginId)"
+          >
             启用
           </el-button>
-          <el-button v-if="row.status == '1'" size="mini" type="danger">
+          <el-button
+            v-if="row.status == '1'"
+            size="mini"
+            type="danger"
+            @click="uninstallClick(row.pluginId)"
+          >
             卸载
           </el-button>
-          <el-button v-if="row.status == '2'" size="mini" type="danger">
+          <el-button
+            v-if="row.status == '2'"
+            size="mini"
+            type="danger"
+            @click="deleteClick(row.pluginId)"
+          >
             删除
           </el-button>
           <el-button size="mini" type="info">
@@ -92,12 +116,20 @@
 </template>
 
 <script>
-import { getList } from "@/api/admin/plugins";
+import {
+  listAction,
+  installAction,
+  deleteAction,
+  uninstallAction,
+  enableAction,
+  disableAction
+} from "@/api/admin/plugins";
+import { Message } from "element-ui";
 
 const pluginStatusOptions = [
   { key: "-1", display_name: "已安装" },
   { key: "0", display_name: "已启用" },
-  { key: "1", display_name: "已禁用" },
+  { key: "1", display_name: "未启用" },
   { key: "2", display_name: "未安装" }
 ];
 
@@ -124,15 +156,47 @@ export default {
     };
   },
   created() {
-    this.fetchData();
+    this.loadList();
   },
   methods: {
-    fetchData() {
+    loadList() {
       this.listLoading = true;
-      getList().then(response => {
+      listAction().then(response => {
         this.list = response.data;
         this.listLoading = false;
       });
+    },
+    installClick(pluginId) {
+      installAction(pluginId).then(this.showMessage);
+    },
+    uninstallClick(pluginId) {
+      uninstallAction(pluginId).then(this.showMessage);
+    },
+    enableClick(pluginId) {
+      enableAction(pluginId).then(this.showMessage);
+    },
+    disableClick(pluginId) {
+      disableAction(pluginId).then(this.showMessage);
+    },
+    deleteClick(pluginId) {
+      deleteAction(pluginId).then(this.showMessage);
+    },
+    showMessage(res) {
+      if (res.code > 0) {
+        Message({
+          message: res.message,
+          type: "success",
+          duration: 5 * 1000
+        });
+      } else {
+        Message({
+          message: res.message,
+          type: "error",
+          duration: 5 * 1000
+        });
+      }
+
+      this.loadList();
     }
   }
 };

@@ -11,7 +11,7 @@
         <el-option
           v-for="item in pluginStatusOptions"
           :key="item.key"
-          :label="item.display_name + '(' + item.key + ')'"
+          :label="item.display_name"
           :value="item.key"
         />
       </el-select>
@@ -30,7 +30,7 @@
           {{ scope.row.pluginID }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="插件名" width="100">
+      <el-table-column align="center" label="插件名" width="110">
         <template slot-scope="scope">
           {{ scope.row.displayName }}
         </template>
@@ -47,44 +47,43 @@
       </el-table-column>
       <el-table-column label="状态" width="110" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status">{{
-            scope.row.status | statusFilter
-          }}</el-tag>
+          <el-tag>{{ scope.row.status | statusFilter }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="版本" width="110" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.version">{{ scope.row.version }}</el-tag>
+          <el-tag>{{ scope.row.version }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
         label="操作"
         align="center"
-        width="230"
         class-name="small-padding fixed-width"
       >
-        <template slot-scope="{ row, $index }">
-          <el-button v-if="row.status == 'enabled'" size="mini" type="success">
+        <template slot-scope="{ row }">
+          <el-button v-if="row.status == '2'" size="mini" type="success">
+            安装
+          </el-button>
+          <el-button v-if="row.status == '0'" size="mini" type="success">
             禁用
           </el-button>
-          <el-button v-if="row.status == 'disabled'" size="mini">
+          <el-button v-if="row.status == '1'" size="mini">
             启用
           </el-button>
-          <el-button v-if="row.status == 'disabled'" size="mini" type="danger">
+          <el-button v-if="row.status == '1'" size="mini" type="danger">
             卸载
           </el-button>
-          <el-button
-            v-if="row.status == 'uninstalled'"
-            size="mini"
-            type="danger"
-          >
+          <el-button v-if="row.status == '2'" size="mini" type="danger">
             删除
           </el-button>
-          <el-button
-            size="mini"
-            type="info"
-          >
+          <el-button size="mini" type="info">
             设置
+          </el-button>
+          <el-button size="mini" type="info">
+            详细
+          </el-button>
+          <el-button size="mini" type="info">
+            文档
           </el-button>
         </template>
       </el-table-column>
@@ -96,10 +95,10 @@
 import { getList } from "@/api/admin/plugins";
 
 const pluginStatusOptions = [
-  { key: "installed", display_name: "已安装" },
-  { key: "enabled", display_name: "已启用" },
-  { key: "disabled", display_name: "已禁用" },
-  { key: "uninstalled", display_name: "已卸载" }
+  { key: "-1", display_name: "已安装" },
+  { key: "0", display_name: "已启用" },
+  { key: "1", display_name: "已禁用" },
+  { key: "2", display_name: "未安装" }
 ];
 
 // arr to obj, such as { CN : "China", US : "USA" }
@@ -131,7 +130,7 @@ export default {
     fetchData() {
       this.listLoading = true;
       getList().then(response => {
-        this.list = response.data.items;
+        this.list = response.data;
         this.listLoading = false;
       });
     }

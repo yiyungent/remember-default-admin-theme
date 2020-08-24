@@ -3,18 +3,18 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">Remember.Core</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="account">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="account"
+          v-model="loginForm.account"
+          placeholder="用户名/邮箱/手机号"
+          name="account"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -30,7 +30,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="请输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -41,11 +41,11 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登陆</el-button>
 
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
+        <span style="margin-right:20px;">Powered by Remember.Core</span>
+        <span><a href="https://github.com/yiyungent/remember-default-admin-theme" target="_blank">GitHub</a></span>
       </div>
 
     </el-form>
@@ -53,32 +53,30 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
-
 export default {
   name: "Login",
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error("Please enter the correct user name"));
+    const validateAccount = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请输入正确的账户"));
       } else {
         callback();
       }
     };
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"));
+      if (value.length < 3) {
+        callback(new Error("密码不能小于3位"));
       } else {
         callback();
       }
     };
     return {
       loginForm: {
-        username: "admin",
-        password: "111111"
+        account: "",
+        password: ""
       },
       loginRules: {
-        username: [{ required: true, trigger: "blur", validator: validateUsername }],
+        account: [{ required: true, trigger: "blur", validator: validateAccount }],
         password: [{ required: true, trigger: "blur", validator: validatePassword }]
       },
       loading: false,

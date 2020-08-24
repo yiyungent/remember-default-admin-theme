@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Remember.Core Admin',
+  title: "Remember.Core Admin",
 
   /**
    * @type {boolean} true | false
@@ -13,4 +13,4 @@ module.exports = {
    * @description Whether show the logo in sidebar
    */
   sidebarLogo: false
-}
+};

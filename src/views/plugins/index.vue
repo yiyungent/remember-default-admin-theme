@@ -100,7 +100,11 @@
           >
             删除
           </el-button>
-          <el-button size="mini" type="info">
+          <el-button
+            v-if="row.status == '0' || row.status == '1'"
+            size="mini"
+            type="info"
+          >
             设置
           </el-button>
           <el-button size="mini" type="info">

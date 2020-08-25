@@ -1,21 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-select
-        v-model="listQuery.status"
-        placeholder="插件状态"
-        clearable
-        class="filter-item"
-        style="width: 130px"
-      >
-        <el-option
-          v-for="item in pluginStatusOptions"
-          :key="item.key"
-          :label="item.display_name"
-          :value="item.key"
-        />
-      </el-select>
-    </div>
 
     <el-table
       v-loading="listLoading"
@@ -25,7 +9,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="PluginID" width="95">
+      <el-table-column align="center" label="PluginId" width="110">
         <template slot-scope="scope">
           {{ scope.row.pluginId }}
         </template>
@@ -152,11 +136,7 @@ export default {
   data() {
     return {
       list: null,
-      listLoading: true,
-      listQuery: {
-        status: undefined
-      },
-      pluginStatusOptions
+      listLoading: true
     };
   },
   created() {

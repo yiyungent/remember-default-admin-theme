@@ -10,11 +10,14 @@ import storage from "@/storage";
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
-const whiteList = ["/oidc/callback"]; // no redirect whitelist
+const whiteList = ["/oidc/callback", "/oidc/logoutCallback"]; // no redirect whitelist
 
 router.beforeEach(async (to, from, next) => {
   // start progress bar
   NProgress.start();
+
+  // 随时记录跳转地址
+  storage.set("redirect", to.path);
 
   // set page title
   document.title = getPageTitle(to.meta.title);

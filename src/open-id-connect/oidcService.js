@@ -6,15 +6,19 @@ var mgr = new Oidc.UserManager({
   userStore: new Oidc.WebStorageStateStore(),
   authority: "https://localhost:5001",
   client_id: "vuejsclient",
-  redirect_uri: window.location.origin + "/oidc/callback",
-  response_type: "token id_token",
+  client_secret: "vuejsclient",
+  redirect_uri: window.location.origin + "/#/oidc/callback",
+  response_type: "code",
   scope: "openid profile",
-  post_logout_redirect_uri: window.location.origin + "/oidc/logoutCallback",
+  post_logout_redirect_uri: window.location.origin + "/#/oidc/logoutCallback",
   //   silent_redirect_uri: window.location.origin + "/static/silent-renew.html",
   accessTokenExpiringNotificationTime: 10,
   //   automaticSilentRenew: true,
   filterProtocolClaims: true,
   loadUserInfo: true
+  // response_mode: "query" // 回调地址参数使用query?key1=val1&key2=val2方式, 默认 使用 # 分割
+  // 源代码地址: https://github.com/IdentityModel/oidc-client-js/blob/dev/src/OidcClient.js#L105
+  // 注意: 经测试，response_type: code 才能使用query方式, implicit 只能使用 #, 不过implicit不需要client_secret, 而 code方式需要
 });
 
 Oidc.Log.logger = console;

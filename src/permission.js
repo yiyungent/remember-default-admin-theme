@@ -5,12 +5,14 @@ import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
 import { getToken } from "@/utils/auth"; // get token from cookie
 import getPageTitle from "@/utils/get-page-title";
+import oidcService from "@/open-id-connect/oidcService";
+import storage from "@/storage";
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
-const whiteList = ["/login"]; // no redirect whitelist
+const whiteList = ["/oidc/callback"]; // no redirect whitelist
 
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // start progress bar
   NProgress.start();
 
@@ -21,12 +23,12 @@ router.beforeEach(async(to, from, next) => {
   const hasToken = getToken();
 
   if (hasToken) {
-    if (to.path === "/login") {
+    if (to.path === "/oidc/callback") {
       // if is logged in, redirect to the home page
       next({ path: "/" });
       NProgress.done();
     } else {
-      const hasGetUserInfo = store.getters.name;
+      const hasGetUserInfo = store.getters.userName;
       if (hasGetUserInfo) {
         next();
       } else {
@@ -39,6 +41,7 @@ router.beforeEach(async(to, from, next) => {
           // remove token and go to login page to re-login
           await store.dispatch("user/resetToken");
           Message.error(error || "Has Error");
+          // TODO: 授权中心登陆页
           next(`/login?redirect=${to.path}`);
           NProgress.done();
         }
@@ -52,7 +55,10 @@ router.beforeEach(async(to, from, next) => {
       next();
     } else {
       // other pages that do not have permission to access are redirected to the login page.
-      next(`/login?redirect=${to.path}`);
+      // next(`/login?redirect=${to.path}`);
+      storage.set("redirect", to.path);
+      // 需要登录的跳转到授权中心-登陆页
+      oidcService.signIn();
       NProgress.done();
     }
   }

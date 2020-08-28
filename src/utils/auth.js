@@ -1,4 +1,4 @@
-const TokenKey = "Remember.Core_Token";
+const TokenKey = "access_token";
 
 export function getToken() {
   return localStorage.getItem(TokenKey);

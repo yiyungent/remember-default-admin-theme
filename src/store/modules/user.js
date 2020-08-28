@@ -1,6 +1,7 @@
-import { login, logout, getInfo } from "@/api/user";
+// import { login, logout, getInfo } from "@/api/user";
 import { getToken, setToken, removeToken } from "@/utils/auth";
 import { resetRouter } from "@/router";
+import oidcService from "@/open-id-connect/oidcService";
 
 const getDefaultState = () => {
   return {
@@ -13,7 +14,7 @@ const getDefaultState = () => {
 const state = getDefaultState();
 
 const mutations = {
-  RESET_STATE: (state) => {
+  RESET_STATE: state => {
     Object.assign(state, getDefaultState());
   },
   SET_TOKEN: (state, token) => {
@@ -29,52 +30,54 @@ const mutations = {
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
-    const { account, password } = userInfo;
+  login({ commit }, token) {
+    // oidcService.signIn();
     return new Promise((resolve, reject) => {
-      login({ account: account.trim(), password: password }).then(response => {
-        const { data } = response;
-        commit("SET_TOKEN", data.token);
-        setToken(data.token);
-        resolve();
-      }).catch(error => {
-        reject(error);
-      });
+      if (!token) {
+        return reject("Verification failed, please Login again.");
+      }
+      commit("SET_TOKEN", token);
+      setToken(token);
+      resolve(token);
     });
   },
 
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo().then(response => {
-        const { data } = response;
+      oidcService
+        .getInfo()
+        .then(userInfo => {
+          if (!userInfo) {
+            return reject("Verification failed, please Login again.");
+          }
 
-        if (!data) {
-          return reject("Verification failed, please Login again.");
-        }
+          const { userName, avatar } = userInfo;
 
-        const { userName, avatar } = data;
-
-        commit("SET_NAME", userName);
-        commit("SET_AVATAR", avatar);
-        resolve(data);
-      }).catch(error => {
-        reject(error);
-      });
+          commit("SET_NAME", userName);
+          commit("SET_AVATAR", avatar);
+          resolve(userInfo);
+        })
+        .catch(error => {
+          reject(error);
+        });
     });
   },
 
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken(); // must remove  token  first
-        resetRouter();
-        commit("RESET_STATE");
-        resolve();
-      }).catch(error => {
-        reject(error);
-      });
+      oidcService
+        .signOut()
+        .then(() => {
+          removeToken(); // must remove  token  first
+          resetRouter();
+          commit("RESET_STATE");
+          resolve();
+        })
+        .catch(error => {
+          reject(error);
+        });
     });
   },
 
@@ -94,4 +97,3 @@ export default {
   mutations,
   actions
 };
-

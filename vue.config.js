@@ -49,6 +49,9 @@ module.exports = {
     }
   },
   chainWebpack(config) {
+    // babel-polyfill
+    config.entry("main").add("babel-polyfill");
+
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin("preload").tap(() => [
       {

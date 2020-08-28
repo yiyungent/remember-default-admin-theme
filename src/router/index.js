@@ -31,9 +31,24 @@ import Layout from "@/layout";
  * all roles can be accessed
  */
 export const constantRoutes = [
+  // 登录回调
   {
-    path: "/login",
-    component: () => import("@/views/login/index"),
+    path: "/oidc/callback",
+    component: () => import("@/views/oidc/callback"),
+    hidden: true
+  },
+
+  // 退出登录回调
+  {
+    path: "/oidc/logoutCallback",
+    component: () => import("@/views/oidc/logoutCallback"),
+    hidden: true
+  },
+
+  // 静默登录刷新access_token
+  {
+    path: "/oidc/silentRenew",
+    component: () => import("@/views/oidc/silentRenew"),
     hidden: true
   },
 
@@ -47,12 +62,14 @@ export const constantRoutes = [
     path: "/",
     component: Layout,
     redirect: "/dashboard",
-    children: [{
-      path: "dashboard",
-      name: "Dashboard",
-      component: () => import("@/views/dashboard/index"),
-      meta: { title: "首页", icon: "dashboard" }
-    }]
+    children: [
+      {
+        path: "dashboard",
+        name: "Dashboard",
+        component: () => import("@/views/dashboard/index"),
+        meta: { title: "首页", icon: "dashboard" }
+      }
+    ]
   },
 
   {
@@ -81,11 +98,14 @@ export const constantRoutes = [
   { path: "*", redirect: "/404", hidden: true }
 ];
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-});
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes,
+    mode: "history" // 注意: 由于 oidc-client 找回调地址中的id_token等不是使用query?id_token=xxx, 而是取 #之后, eg: #id_token
+    // http://localhost:9528/oidc/callback#id_token=eyJhbGciOiJSUzI1NiIsImt
+  });
 
 const router = createRouter();
 

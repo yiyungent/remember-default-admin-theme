@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -91,10 +90,14 @@
           >
             设置
           </el-button>
-          <el-button size="mini" type="info">
+          <el-button
+            size="mini"
+            type="info"
+            @click="detailsClick(row.pluginId)"
+          >
             详细
           </el-button>
-          <el-button size="mini" type="info">
+          <el-button size="mini" type="info" @click="readmeClick(row.pluginId)">
             文档
           </el-button>
         </template>
@@ -164,6 +167,12 @@ export default {
     },
     deleteClick(pluginId) {
       deleteAction(pluginId).then(this.showMessage);
+    },
+    detailsClick(pluginId) {
+      this.$router.push({
+        name: "Plugins_Details",
+        params: { pluginId: pluginId }
+      });
     },
     showMessage(res) {
       if (res.code > 0) {

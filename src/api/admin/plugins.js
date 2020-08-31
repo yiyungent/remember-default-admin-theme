@@ -47,3 +47,11 @@ export function disableAction(pluginId) {
     params: { pluginId: pluginId }
   });
 }
+
+export function detailsAction(pluginId) {
+  return request({
+    url: "/admin/plugins/details",
+    method: "get",
+    params: { pluginId: pluginId }
+  });
+}

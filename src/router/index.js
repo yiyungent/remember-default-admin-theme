@@ -90,6 +90,13 @@ export const constantRoutes = [
         name: "Plugins_Upload",
         component: () => import("@/views/plugins/upload"),
         meta: { title: "上传插件", icon: "tree" }
+      },
+      {
+        path: "details/:pluginId",
+        name: "Plugins_Details",
+        component: () => import("@/views/plugins/details"),
+        meta: { title: "插件详细", icon: "tree" },
+        hidden: true
       }
     ]
   },

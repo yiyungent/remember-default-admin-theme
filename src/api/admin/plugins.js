@@ -55,3 +55,11 @@ export function detailsAction(pluginId) {
     params: { pluginId: pluginId }
   });
 }
+
+export function readmeAction(pluginId) {
+  return request({
+    url: "/admin/plugins/readme",
+    method: "get",
+    params: { pluginId: pluginId }
+  });
+}

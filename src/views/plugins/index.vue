@@ -174,6 +174,12 @@ export default {
         params: { pluginId: pluginId }
       });
     },
+    readmeClick(pluginId) {
+      this.$router.push({
+        name: "Plugins_Readme",
+        params: { pluginId: pluginId }
+      });
+    },
     showMessage(res) {
       if (res.code > 0) {
         Message({

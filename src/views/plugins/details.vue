@@ -1,36 +1,38 @@
 <template>
-  <div class="rem-plugin-details">
-    <el-page-header
-      title="返回"
-      content="插件详细"
-      class="rem-page-header"
-      @back="goBack"
-    />
-    <el-card class="box-card">
-      <div class="rem-item">
-        <span class="rem-label">PluginId:</span><span>{{ info.pluginId }}</span>
-      </div>
-      <div class="rem-item">
-        <span class="rem-label">显示名:</span><span>{{ info.displayName }}</span>
-      </div>
-      <div class="rem-item">
-        <span class="rem-label">描述:</span><span>{{ info.description }}</span>
-      </div>
-      <div class="rem-item">
-        <span class="rem-label">作者:</span><span>{{ info.author }}</span>
-      </div>
-      <div class="rem-item">
-        <span class="rem-label">版本:</span><span><el-tag>{{ info.version }}</el-tag></span>
-      </div>
-      <div class="rem-item">
-        <span class="rem-label">支持版本:</span><span><el-tag v-for="(v, index) in info.supportedVersions" :key="index">{{
-          v
-        }}</el-tag></span>
-      </div>
-      <div class="rem-item">
-        <span class="rem-label">状态:</span><span><el-tag>{{ info.status | statusFilter }}</el-tag></span>
-      </div>
-    </el-card>
+  <div class="app-container">
+    <div class="rem-plugin-details">
+      <el-page-header
+        title="返回"
+        content="插件详细"
+        class="rem-page-header"
+        @back="goBack"
+      />
+      <el-card class="box-card">
+        <div class="rem-item">
+          <span class="rem-label">PluginId:</span><span>{{ info.pluginId }}</span>
+        </div>
+        <div class="rem-item">
+          <span class="rem-label">显示名:</span><span>{{ info.displayName }}</span>
+        </div>
+        <div class="rem-item">
+          <span class="rem-label">描述:</span><span>{{ info.description }}</span>
+        </div>
+        <div class="rem-item">
+          <span class="rem-label">作者:</span><span>{{ info.author }}</span>
+        </div>
+        <div class="rem-item">
+          <span class="rem-label">版本:</span><span><el-tag>{{ info.version }}</el-tag></span>
+        </div>
+        <div class="rem-item">
+          <span class="rem-label">支持版本:</span><span><el-tag v-for="(v, index) in info.supportedVersions" :key="index">{{
+            v
+          }}</el-tag></span>
+        </div>
+        <div class="rem-item">
+          <span class="rem-label">状态:</span><span><el-tag>{{ info.status | statusFilter }}</el-tag></span>
+        </div>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -92,7 +94,7 @@ export default {
 
 <style lang="scss" scoped>
 .rem-plugin-details {
-  margin: 26px 26px 14px;
+//   margin: 26px 26px 14px;
   .rem-page-header {
     margin-bottom: 24px;
   }

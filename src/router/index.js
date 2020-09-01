@@ -114,10 +114,10 @@ export const constantRoutes = [
 
 const createRouter = () =>
   new Router({
-    // mode: 'history', // require service support
+    mode: "history", // require service support
     scrollBehavior: () => ({ y: 0 }),
-    routes: constantRoutes,
-    mode: "hash" // 注意: 由于 oidc-client 找回调地址中的id_token等不是使用query?id_token=xxx, 而是取 #之后, eg: #id_token
+    routes: constantRoutes
+    // mode: "hash" // 注意: 由于 oidc-client 找回调地址中的id_token等不是使用query?id_token=xxx, 而是取 #之后, eg: #id_token
     // http://localhost:9528/oidc/callback#id_token=eyJhbGciOiJSUzI1NiIsImt
     // 使用 授权码code模式，就会采用query?方式，而使用implicit模式，则会采用#方式
   });

@@ -63,3 +63,19 @@ export function readmeAction(pluginId) {
     params: { pluginId: pluginId }
   });
 }
+
+export function settingsAction(pluginId) {
+  return request({
+    url: "/admin/plugins/settings",
+    method: "get",
+    params: { pluginId: pluginId }
+  });
+}
+
+export function settingsSaveAction(pluginId, data) {
+  return request({
+    url: "/admin/plugins/settings",
+    method: "post",
+    data: { pluginId: pluginId, data: data }
+  });
+}

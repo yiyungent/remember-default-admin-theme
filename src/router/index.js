@@ -104,6 +104,13 @@ export const constantRoutes = [
         component: () => import("@/views/plugins/readme"),
         meta: { title: "插件文档", icon: "tree" },
         hidden: true
+      },
+      {
+        path: "settings/:pluginId",
+        name: "Plugins_Settings",
+        component: () => import("@/views/plugins/settings"),
+        meta: { title: "插件设置", icon: "tree" },
+        hidden: true
       }
     ]
   },

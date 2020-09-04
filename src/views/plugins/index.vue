@@ -87,6 +87,7 @@
             v-if="row.status == '0' || row.status == '1'"
             size="mini"
             type="info"
+            @click="settingsClick(row.pluginId)"
           >
             设置
           </el-button>
@@ -177,6 +178,12 @@ export default {
     readmeClick(pluginId) {
       this.$router.push({
         name: "Plugins_Readme",
+        params: { pluginId: pluginId }
+      });
+    },
+    settingsClick(pluginId) {
+      this.$router.push({
+        name: "Plugins_Settings",
         params: { pluginId: pluginId }
       });
     },

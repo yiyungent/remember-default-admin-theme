@@ -21,12 +21,13 @@
 
 <script>
 import { Message } from "element-ui";
+import { getToken } from "@/utils/auth";
 
 export default {
   data() {
     return {
       uploadAction: process.env.VUE_APP_BASE_API + "/admin/plugins/upload",
-      headers: { Authorization: "tegfggad" }
+      headers: { Authorization: "Bearer " + getToken() }
     };
   },
   methods: {

@@ -115,6 +115,28 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: "/article",
+    component: Layout,
+    redirect: "/article/list",
+    name: "Article",
+    meta: { title: "文章管理", icon: "el-icon-s-help" },
+    children: [
+      {
+        path: "list",
+        name: "Article_List",
+        component: () => import("@/views/article/index"),
+        meta: { title: "文章列表", icon: "table" }
+      },
+      {
+        path: "create",
+        name: "Article_Create",
+        component: () => import("@/views/article/create"),
+        meta: { title: "添加文章", icon: "table" }
+      }
+    ]
+  },
+
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true }
 ];

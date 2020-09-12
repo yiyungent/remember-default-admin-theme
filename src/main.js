@@ -15,6 +15,13 @@ import router from "./router";
 import "@/icons"; // icon
 import "@/permission"; // permission control
 
+import * as filters from "./filters";
+
+// 注册常用全局过滤器
+Object.keys(filters).forEach((key) => {
+  Vue.filter(key, filters[key]);
+});
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

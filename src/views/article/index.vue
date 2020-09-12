@@ -8,7 +8,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="ID" width="110">
+      <el-table-column align="center" label="ID" width="50">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
@@ -18,19 +18,19 @@
           {{ scope.row.title }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="作者">
+      <el-table-column align="center" label="作者" width="110">
         <template slot-scope="scope">
-          {{ scope.row.author }}
+          {{ scope.row.author.userName }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="110" align="center">
+      <el-table-column label="创建时间" width="140" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.createTime }}</span>
+          <span>{{ scope.row.createTime | dateFormat("YYYY-MM-DD HH:mm") }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="最后更新" width="110" align="center">
+      <el-table-column label="最后更新" width="140" align="center">
         <template slot-scope="scope">
-          <el-tag>{{ scope.row.lastUplatedTime }}</el-tag>
+          <span>{{ scope.row.lastUpdateTime | dateFormat("YYYY-MM-DD HH:mm") }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -71,7 +71,8 @@ export default {
       listLoading: true,
       page: {
         pageIndex: 1,
-        pageSize: 5
+        pageSize: 5,
+        totalCount: 0
       }
     };
   },
@@ -82,7 +83,10 @@ export default {
     loadList() {
       this.listLoading = true;
       listAction(this.page).then(response => {
-        this.list = response.data;
+        this.list = response.data.list;
+        this.page.pageIndex = response.pageIndex;
+        this.page.pageSize = response.pageSize;
+        this.page.totalCount = response.totalCount;
         this.listLoading = false;
       });
     },

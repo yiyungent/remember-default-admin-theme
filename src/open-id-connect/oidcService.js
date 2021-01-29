@@ -9,7 +9,7 @@ var mgr = new Oidc.UserManager({
   // client_secret: "vuejsclient",
   redirect_uri: window.location.origin + "/oidc/callback",
   response_type: "id_token token",
-  scope: "openid profile webapi",
+  scope: "openid profile Remember.Core.WebApi",
   post_logout_redirect_uri: window.location.origin + "/oidc/logoutCallback",
   //   silent_redirect_uri: window.location.origin + "/static/silent-renew.html",
   accessTokenExpiringNotificationTime: 10,
